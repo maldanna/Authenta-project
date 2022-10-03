@@ -1,17 +1,14 @@
-package main.java.com.maldanna.authenta.controller;
+package com.maldanna.authenta.controller;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CustomerController {
-
-
-
-    public void getNonce(){
-     
+    
+    public void getNonce(){     
     }
-    public static void name() {
-        
-        
 
+    public static void name() {
     }
     
-
 }
