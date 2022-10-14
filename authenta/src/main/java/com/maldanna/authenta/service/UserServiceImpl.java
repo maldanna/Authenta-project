@@ -10,7 +10,10 @@ import com.maldanna.authenta.model.User;
 import com.maldanna.authenta.repository.RoleRepo;
 import com.maldanna.authenta.repository.UserRepo;
 
-@Service 
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
 public class UserServiceImpl implements UserService{
 
     @Autowired
@@ -20,6 +23,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User saveUser(User user) {
+        log.info("save user");
         return uRepo.save(user);
     }
 
@@ -39,7 +43,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUser(String userName) {
-        
         return uRepo.findByUsername(userName);
     }
 
