@@ -10,8 +10,6 @@ public class GenerateToken {
 
         //Map<String,object> map1=new Map<String,object>();
         String token="";
-
-        
         return null;
     }
     
