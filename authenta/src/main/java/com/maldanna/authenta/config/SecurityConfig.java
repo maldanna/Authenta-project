@@ -3,8 +3,10 @@ package com.maldanna.authenta.config;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -14,9 +16,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.maldanna.authenta.service.UserServiceImpl;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    
+
+    @Autowired
+    UserServiceImpl uServiceImpl;
 
    /* @Bean
     protected InMemoryUserDetailsManager configAuthentication() {
@@ -40,15 +49,14 @@ public class SecurityConfig {
 
         http
             .csrf(csrf->csrf.ignoringAntMatchers("/h2-console/**"))
-            .authorizeRequests(auth->{
-                auth.antMatchers("/h2-console/**").permitAll();
-                auth.antMatchers("authena/home").permitAll();
-               // auth.antMatchers("/authenta/**").au;
-                //auth.antMatchers("/user/**").hasAuthority("ADMIN");
-                auth.anyRequest().authenticated();
-                //auth.anyRequest().permitAll();
-            }) 
-            .httpBasic();
+            .authorizeRequests(auth->auth
+                .antMatchers("/h2-console/**").permitAll()
+                //.antMatchers("authena/home").permitAll()
+                .anyRequest().authenticated()
+            )
+            .userDetailsService(uServiceImpl)
+            .httpBasic(Customizer.withDefaults());
+            
            
         
 

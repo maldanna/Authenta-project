@@ -37,10 +37,11 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
     @Override
     public void addRoleToUser(String userName, String roleName) {
-        MyUser user=uRepo.findByUsername(userName);
+       /* MyUser user=uRepo.findByUsername(userName);
         Role role=roleRepo.findByName(roleName);
         user.getRoles().add(role); // due to @Transactional annotation it will save directly into database
-        uRepo.save(user);
+        uRepo.save(user);*/
+
         
     }
 
@@ -56,9 +57,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-       MyUser user=uRepo.findByUsername(username);
-
-        return  null;
+        return new SecurityUserImpl(uRepo.findByUsername(username));
     }
 
     
