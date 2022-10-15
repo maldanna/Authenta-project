@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.maldanna.authenta.model.MyUser;
-import com.maldanna.authenta.model.Role;
-import com.maldanna.authenta.repository.UserRepo;
 import com.maldanna.authenta.service.UserServiceImpl;
 
 @SpringBootApplication

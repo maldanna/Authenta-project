@@ -48,6 +48,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+            .csrf().disable()
+            .cors().disable()
             .csrf(csrf->csrf.ignoringAntMatchers("/h2-console/**"))
             .authorizeRequests(auth->auth
                 .antMatchers("/h2-console/**").permitAll()

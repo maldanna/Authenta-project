@@ -11,6 +11,7 @@ import com.maldanna.authenta.model.CustomerData;
 public class RambusHandler {
 
     public String getNonce(CustomerData custData){
+        
 
         HttpResponse httpResponse=null;
         String response = httpResponse.body().toString();

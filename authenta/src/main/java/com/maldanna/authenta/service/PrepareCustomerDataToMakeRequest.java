@@ -10,9 +10,10 @@ public class PrepareCustomerDataToMakeRequest {
    
     @Autowired
     GenerateToken gToken;
-    public String prepareDataAndMakeRequest(CustomerData custData){
 
-        String token=gToken.generateToken(null);
+    public String getToken(CustomerData custData){
+        custData.setCommands("command1,command2,command3");
+        String token=gToken.generateToken(custData);
         return token;
 
     }
