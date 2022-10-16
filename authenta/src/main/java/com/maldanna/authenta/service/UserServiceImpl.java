@@ -1,5 +1,6 @@
 package com.maldanna.authenta.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +58,8 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("loadUserByUsername method called");
         return new SecurityUserImpl(uRepo.findByUsername(username));
     }
 
-    
 }

@@ -1,14 +1,15 @@
 package com.maldanna.authenta.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,8 +25,13 @@ public class MyUser {
     private Long id;
     private String username;
     private String password;
-    // to load all users' roles when users loaded
-   // @ManyToMany(fetch = FetchType.EAGER)
     private String roles;
+
+    @ManyToMany(fetch = FetchType.EAGER) // to load role eargarly
+    @JoinTable(name="User_Role",
+        joinColumns = {@JoinColumn(name="User_Id")},
+        inverseJoinColumns={@JoinColumn(name="Role_Id")}
+    )
+    private Set<Role> role;
 
 }
