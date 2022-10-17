@@ -3,13 +3,16 @@ package com.maldanna.authenta.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import com.maldanna.authenta.service.UserServiceImpl;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -17,11 +20,11 @@ import com.maldanna.authenta.service.UserServiceImpl;
 public class SecurityConfig {
 
     @Autowired
-    UserServiceImpl uServiceImpl;
-
+    UserDetailsService uServiceImpl;
     @Autowired
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
+    @Autowired
+    JwtRequestFilter jwtFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -34,20 +37,32 @@ public class SecurityConfig {
             .csrf(csrf->csrf.ignoringAntMatchers("/h2-console/**"))
             .authorizeRequests(auth->auth
                 .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("user/login").permitAll()
                 .anyRequest().authenticated())
-            .userDetailsService(uServiceImpl)
+            // .userDetailsService(uServiceImpl) for basic or form based authentication
             .exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint).and()
-            .csrf().disable()
-            .httpBasic(Customizer.withDefaults()); // order imporrtant see  spring security doc
+            .csrf().disable();
+            //.httpBasic(Customizer.withDefaults()); for rhttpbasic authentication // order imporrtant see  spring security doc
+            http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
         return http.build();
+        
     }
     
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder){
+        try{
+            authenticationManagerBuilder.userDetailsService(uServiceImpl).passwordEncoder(passwordEncoder());
+        }
+        catch(Exception e){
+            System.out.println("Exception occurred !!");
+        }
+    }
 
-  /*  @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception { 
+   @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception { 
         return authenticationConfiguration.getAuthenticationManager();
     }
-    */
+    
     
   /*   @Bean
     protected InMemoryUserDetailsManager configAuthentication() {

@@ -9,7 +9,7 @@ import com.maldanna.authenta.model.CustomerData;
 public class PrepareCustomerDataToMakeRequest {
    
     @Autowired
-    GenerateToken gToken;
+    JwtToken gToken;
 
     public String getToken(CustomerData custData){
         custData.setCommands("command1,command2,command3");
