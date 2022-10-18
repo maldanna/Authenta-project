@@ -1,8 +1,14 @@
 package com.maldanna.authenta.config;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -37,15 +43,15 @@ public class SecurityConfig {
         http
             .csrf(csrf->csrf.ignoringAntMatchers("/h2-console/**"))
             .authorizeRequests()
-            .antMatchers("/h2-console/**").permitAll()
-            .antMatchers("user/login").permitAll()
-            .anyRequest().authenticated().and()
+           // .antMatchers("/h2-console/**").permitAll()
+           // .antMatchers("user/login").permitAll()
+            .anyRequest().permitAll().and()
             // .userDetailsService(uServiceImpl) for basic or form based authentication
             .exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().csrf().and().cors().disable();
             //.httpBasic(Customizer.withDefaults()); for rhttpbasic authentication // order imporrtant see  spring security doc
-            http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
+           // http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -64,6 +70,16 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception { 
         return authenticationConfiguration.getAuthenticationManager();
     }
+
+  /*   @Bean
+    public HttpMessageConverter<String> responseBodyConverter() {
+        StringHttpMessageConverter converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
+        converter.setSupportedMediaTypes(Arrays.asList(new MediaType("text", "plain", Charset.forName("UTF-8"))));
+        return converter;
+    }
+    */
+    
+    
     
     
   /*   @Bean
