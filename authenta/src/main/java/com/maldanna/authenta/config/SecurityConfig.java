@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,19 +36,20 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf->csrf.ignoringAntMatchers("/h2-console/**"))
-            .authorizeRequests(auth->auth
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("user/login").permitAll()
-                .anyRequest().authenticated())
+            .authorizeRequests()
+            .antMatchers("/h2-console/**").permitAll()
+            .antMatchers("user/login").permitAll()
+            .anyRequest().authenticated().and()
             // .userDetailsService(uServiceImpl) for basic or form based authentication
-            .exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint).and()
-            .csrf().disable();
+            .exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().csrf().and().cors().disable();
             //.httpBasic(Customizer.withDefaults()); for rhttpbasic authentication // order imporrtant see  spring security doc
             http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
         return http.build();
-        
     }
-    
+
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder){
         try{
