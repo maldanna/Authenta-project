@@ -18,7 +18,8 @@ import com.maldanna.authenta.service.JwtToken;
 import com.maldanna.authenta.service.UserServiceImpl;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter{
+public class JwtRequestFilter{
+/*  extends OncePerRequestFilter{
 
     
     @Autowired
@@ -30,6 +31,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
+
         String username = null;
         String jwtToken = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
@@ -53,8 +55,10 @@ public class JwtRequestFilter extends OncePerRequestFilter{
                 }
             }
         filterChain.doFilter(request, response);
-        }
-    }
+       
 
-    
+        }*/
+
+         
+    //}
 }

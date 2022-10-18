@@ -2,8 +2,8 @@ package com.maldanna.authenta.config;
 
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-public class CrosConfiguration {
+//@Configuration
+public class CrosConfiguration432 {
 
    /*  public WebMvcConfigurer crosConfigure(){
         return new WebMvcConfigurer() {

@@ -57,6 +57,7 @@ public class UserController {
         final UserDetails userDetails = uService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtToken.generateToken(userDetails);
         return new ResponseEntity<String>("You registered Successfully!! token: "+token,HttpStatus.OK);
+       // return new ResponseEntity<String>("You registered Successfully!! token: ",HttpStatus.OK);
     }
 
 

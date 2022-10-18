@@ -14,6 +14,8 @@ import com.maldanna.authenta.model.Role;
 import com.maldanna.authenta.service.RoleService;
 import com.maldanna.authenta.service.UserServiceImpl;
 
+
+
 @SpringBootApplication
 public class AuthentaApplication {
 
@@ -22,6 +24,7 @@ public class AuthentaApplication {
 
 	@Autowired
 	RoleService rService;
+
 
 
 	public static void main(String[] args) {
@@ -45,6 +48,7 @@ public class AuthentaApplication {
 
 		};
 	}
+
 }
 
 

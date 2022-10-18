@@ -1,14 +1,9 @@
 package com.maldanna.authenta.config;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import org.springframework.http.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -26,36 +21,39 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
+   @Autowired
     UserDetailsService uServiceImpl;
     @Autowired
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    @Autowired
-    JwtRequestFilter jwtFilter;
+  /* @Autowired
+    JwtRequestFilter jwtFilter;*/
+    
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf->csrf.ignoringAntMatchers("/h2-console/**"))
             .authorizeRequests()
-           // .antMatchers("/h2-console/**").permitAll()
-           // .antMatchers("user/login").permitAll()
+            .antMatchers("/h2-console/**").permitAll()
+             .antMatchers("user/login").permitAll()
             .anyRequest().permitAll().and()
             // .userDetailsService(uServiceImpl) for basic or form based authentication
             .exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
-            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().csrf().and().cors().disable();
+             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+              .and()
+            .csrf().disable();
             //.httpBasic(Customizer.withDefaults()); for rhttpbasic authentication // order imporrtant see  spring security doc
-           // http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-
+/* 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder){
         try{
@@ -65,11 +63,15 @@ public class SecurityConfig {
             System.out.println("Exception occurred !!");
         }
     }
+    */
+
 
    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception { 
         return authenticationConfiguration.getAuthenticationManager();
     }
+    
+
 
   /*   @Bean
     public HttpMessageConverter<String> responseBodyConverter() {
