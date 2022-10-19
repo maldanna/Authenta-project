@@ -25,8 +25,8 @@ public class SecurityConfig {
     UserDetailsService uServiceImpl;
     @Autowired
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-  /* @Autowired
-    JwtRequestFilter jwtFilter;*/
+    @Autowired
+    JwtRequestFilter jwtFilter;
     
 
     @Bean
@@ -42,18 +42,17 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers("/h2-console/**").permitAll()
              .antMatchers("user/login").permitAll()
-            .anyRequest().permitAll().and()
+            .anyRequest().authenticated().and()
             // .userDetailsService(uServiceImpl) for basic or form based authentication
             .exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
              .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
               .and()
             .csrf().disable();
             //.httpBasic(Customizer.withDefaults()); for rhttpbasic authentication // order imporrtant see  spring security doc
-        //http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-/* 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder){
         try{
@@ -63,7 +62,7 @@ public class SecurityConfig {
             System.out.println("Exception occurred !!");
         }
     }
-    */
+    
 
 
    @Bean

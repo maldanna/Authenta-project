@@ -35,8 +35,6 @@ public class UserController {
     @Autowired
 	private AuthenticationManager authenticationManager;
     
-
-    
     @GetMapping("/users")
     public List<MyUser> getAllUsers(){
         System.out.println("get all users method");
@@ -48,21 +46,22 @@ public class UserController {
         uService.saveUser(user);
         return new ResponseEntity<String>("You registered Successfully!! ",HttpStatus.OK);
     }
-
     
     @PostMapping("/login")
     public ResponseEntity<String>  loginUser(@RequestBody JwtRequest authenticationRequest) throws Exception{
         System.out.print("done");
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        System.out.println("method loginUser: "+authenticationRequest.getUsername());
         final UserDetails userDetails = uService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtToken.generateToken(userDetails);
-        return new ResponseEntity<String>("You registered Successfully!! token: "+token,HttpStatus.OK);
+        return new ResponseEntity<String>("You logined Successfully!! token: "+token,HttpStatus.OK);
        // return new ResponseEntity<String>("You registered Successfully!! token: ",HttpStatus.OK);
     }
 
 
     private void authenticate(String username, String password) throws Exception {
 		try {
+            System.out.println("username: "+username+"password:"+password);
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (Exception e) {
             System.out.println("exception occurred in authenticate method: "+e.getMessage());

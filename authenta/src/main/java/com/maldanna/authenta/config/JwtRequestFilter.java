@@ -18,8 +18,7 @@ import com.maldanna.authenta.service.JwtToken;
 import com.maldanna.authenta.service.UserServiceImpl;
 
 @Component
-public class JwtRequestFilter{
-/*  extends OncePerRequestFilter{
+public class JwtRequestFilter extends OncePerRequestFilter{
 
     
     @Autowired
@@ -50,15 +49,17 @@ public class JwtRequestFilter{
                 if (jwtTokenService.validateToken(jwtToken, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    System.out.println("came into JwtRequestFilter and UsernamePasswordAuthenticationToken ");
                     // After setting the Authentication in the context, we specify that the current user is authenticated. So it passes the Spring Security Configurations successfully.
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }
+        
         filterChain.doFilter(request, response);
        
 
-        }*/
+        }
 
          
-    //}
+    }
 }

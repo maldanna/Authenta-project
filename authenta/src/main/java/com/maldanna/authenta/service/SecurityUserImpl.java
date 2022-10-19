@@ -22,6 +22,7 @@ public class SecurityUserImpl implements UserDetails {
 
     @Override
     public String getPassword() {
+        System.out.println("password is:"+user.getPassword());
         return user.getPassword();
     }
 
